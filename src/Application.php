@@ -4,16 +4,25 @@ namespace Scaffold;
 
 use League\Container\Container;
 use League\Container\ReflectionContainer;
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
+use Scaffold\Configuration\ConfigurationInterface;
+use Scaffold\Controller\ChildControllerFactory;
+use Scaffold\Response\ResponseEmitterInterface;
+use Scaffold\Router\RouterInterface;
+use Scaffold\Template\TemplateEngineInterface;
 
 class Application implements ApplicationInterface
 {
-    const INTERFACE_CONFIGURATION = 'Scaffold\ConfigurationInterface';
-    const INTERFACE_CONTAINER = 'Psr\Container\ContainerInterface';
-    const INTERFACE_REQUEST = 'Psr\Http\Message\RequestInterface';
-    const INTERFACE_RESPONSE = 'Psr\Http\Message\ResponseInterface';
-    const INTERFACE_RESPONSE_EMITTER = 'Scaffold\ResponseEmitterInterface';
-    const INTERFACE_ROUTER = 'Scaffold\RouterInterface';
-    const INTERFACE_TEMPLATE_ENGINE = 'Scaffold\TemplateEngineInterface';
+    const INTERFACE_CONFIGURATION = ConfigurationInterface::class;
+    const INTERFACE_CONTAINER = ContainerInterface::class;
+    const INTERFACE_REQUEST = RequestInterface::class;
+    const INTERFACE_RESPONSE = ResponseInterface::class;
+    const INTERFACE_RESPONSE_EMITTER = ResponseEmitterInterface::class;
+    const INTERFACE_ROUTER = RouterInterface::class;
+    const INTERFACE_TEMPLATE_ENGINE = TemplateEngineInterface::class;
     
     public $route;
     

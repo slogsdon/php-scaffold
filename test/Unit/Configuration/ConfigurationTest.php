@@ -1,9 +1,9 @@
 <?php
 
-namespace Scaffold\Test\Unit;
+namespace Scaffold\Test\Unit\Configuration;
 
 use PHPUnit\Framework\TestCase;
-use Scaffold\Configuration;
+use Scaffold\Configuration\Configuration;
 
 class ConfigurationTest extends TestCase
 {

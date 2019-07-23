@@ -1,6 +1,8 @@
 <?php
 
-namespace Scaffold;
+namespace Scaffold\Controller;
+
+use Scaffold\ApplicationInterface;
 
 abstract class AbstractController
 {

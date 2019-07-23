@@ -1,6 +1,6 @@
 <?php
 
-namespace Scaffold;
+namespace Scaffold\Template;
 
 interface TemplateEngineInterface
 {

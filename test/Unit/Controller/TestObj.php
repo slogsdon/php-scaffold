@@ -1,6 +1,6 @@
 <?php
 
-namespace Scaffold\Test\Unit;
+namespace Scaffold\Test\Unit\Controller;
 
 class TestObj
 {

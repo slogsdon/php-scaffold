@@ -1,6 +1,6 @@
 <?php
 
-namespace Scaffold;
+namespace Scaffold\Response;
 
 use Psr\Http\Message\ResponseInterface;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Scaffold\Test\Unit;
+namespace Scaffold\Test\Unit\Response;
 
 use Psr\Http\Message\ResponseInterface;
-use Scaffold\ResponseEmitterInterface;
+use Scaffold\Response\ResponseEmitterInterface;
 
 class NaiveEmitter implements ResponseEmitterInterface
 {

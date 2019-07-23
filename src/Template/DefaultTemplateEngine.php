@@ -1,8 +1,10 @@
 <?php
 
-namespace Scaffold;
+namespace Scaffold\Template;
 
 use League\Plates\Engine;
+
+use Scaffold\Configuration\ConfigurationInterface;
 
 class DefaultTemplateEngine extends Engine implements TemplateEngineInterface
 {

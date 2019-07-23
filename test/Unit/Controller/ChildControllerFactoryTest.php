@@ -1,9 +1,9 @@
 <?php
 
-namespace Scaffold\Test\Unit;
+namespace Scaffold\Test\Unit\Controller;
 
 use PHPUnit\Framework\TestCase;
-use Scaffold\ChildControllerFactory;
+use Scaffold\Controller\ChildControllerFactory;
 
 class ChildControllerFactoryTest extends TestCase
 {

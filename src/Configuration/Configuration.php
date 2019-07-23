@@ -1,6 +1,6 @@
 <?php
 
-namespace Scaffold;
+namespace Scaffold\Configuration;
 
 class Configuration implements ConfigurationInterface
 {

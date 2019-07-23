@@ -1,6 +1,6 @@
 <?php
 
-namespace Scaffold;
+namespace Scaffold\Router;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;

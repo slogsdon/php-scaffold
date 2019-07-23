@@ -3,11 +3,12 @@
 namespace Scaffold\Test\Unit;
 
 use Psr\Http\Message\ResponseInterface;
-use Scaffold\ResponseEmitterInterface;
 
 use League\Container\Container;
 use PHPUnit\Framework\TestCase;
 use Scaffold\Application;
+
+use Scaffold\Test\Unit\Response\NaiveEmitter;
 
 class ApplicationTest extends TestCase
 {

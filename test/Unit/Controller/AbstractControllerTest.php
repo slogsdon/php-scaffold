@@ -1,10 +1,11 @@
 <?php
 
-namespace Scaffold\Test\Unit;
+namespace Scaffold\Test\Unit\Controller;
 
 use PHPUnit\Framework\TestCase;
-use Scaffold\AbstractController;
-use Scaffold\ApplicationInterface;
+use Scaffold\Controller\AbstractController;
+
+use Scaffold\Test\Unit\TestApp;
 
 class AbstractControllerTest extends TestCase
 {

@@ -9,6 +9,12 @@ use League\Container\ReflectionContainer;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 
+use Scaffold\Application;
+use Scaffold\Configuration\Configuration;
+use Scaffold\Response\DefaultResponseEmitter;
+use Scaffold\Router\DefaultRouter;
+use Scaffold\Template\DefaultTemplateEngine;
+
 class DefaultContainer extends Container implements ContainerInterface
 {
     public function __construct(array $options = [])
