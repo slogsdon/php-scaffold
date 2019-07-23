@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Scaffold\Configuration;
 
@@ -27,7 +27,7 @@ class Configuration implements ConfigurationInterface
         return implode(DIRECTORY_SEPARATOR, [
             getcwd(),
             '..',
-            trim($this->options['views']['directory'], DIRECTORY_SEPARATOR),
+            trim($this->options['views']['directory'] ?? '', DIRECTORY_SEPARATOR),
         ]);
     }
 }
