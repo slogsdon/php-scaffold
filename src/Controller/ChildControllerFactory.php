@@ -2,8 +2,19 @@
 
 namespace Scaffold\Controller;
 
+/**
+ * Aids in child controller instantiation
+ */
 class ChildControllerFactory
 {
+    /**
+     * Attempts to update a callable `$handler` to instantiate an
+     * `AbstractController` sub-class
+     *
+     * @param mixed $handler
+     * @param array $deps
+     * @return mixed
+     */
     public static function maybeMake($handler, array $deps = [])
     {
         if (is_array($handler) && count($handler) === 2) {
@@ -16,7 +27,14 @@ class ChildControllerFactory
         
         return $handler;
     }
-    
+
+    /**
+     * Sets dependencies of an `AbstractController` sub-class
+     *
+     * @param AbstractController $obj
+     * @param array $deps
+     * @return AbstractController
+     */
     public static function setDeps($obj, array $deps)
     {
         foreach ($deps as $k => $v) {

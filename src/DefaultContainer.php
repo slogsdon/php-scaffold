@@ -15,8 +15,16 @@ use Scaffold\Response\DefaultResponseEmitter;
 use Scaffold\Router\DefaultRouter;
 use Scaffold\Template\DefaultTemplateEngine;
 
+/**
+ * Default service container for Scaffold using The PHP League's Container project
+ */
 class DefaultContainer extends Container implements ContainerInterface
 {
+    /**
+    * Instantiates a new object
+    *
+    * @param array $options
+    */
     public function __construct(array $options = [])
     {
         parent::__construct();

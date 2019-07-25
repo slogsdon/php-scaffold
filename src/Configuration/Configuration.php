@@ -2,32 +2,62 @@
 
 namespace Scaffold\Configuration;
 
+/**
+ * Default configuration for Scaffold
+ */
 class Configuration implements ConfigurationInterface
 {
+    use \Scaffold\Utility\SafeGettable;
+
+    /**
+     * Current options
+     *
+     * @var array|null
+     */
     protected $options;
     
+    /**
+     * Instantiates a new object
+     *
+     * @param array|null $options
+     */
     public function __construct(array $options = null)
     {
         $this->options = $options;
     }
     
+    /**
+     * Gets the current configuration options
+     *
+     * @return array
+     */
     public function getOptions()
     {
-        return $this->options;
+        return $this->options ?? [];
     }
-    
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param array $options
+     * @return ConfigurationInterface
+     */
     public function setOptions(array $options)
     {
         $this->options = $options;
         return $this;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public function getViewRoot()
     {
+        $viewOptions = $this->safeGet($this->options, 'views', []);
         return implode(DIRECTORY_SEPARATOR, [
             getcwd(),
             '..',
-            trim($this->options['views']['directory'] ?? '', DIRECTORY_SEPARATOR),
+            trim($this->safeGet($viewOptions, 'directory', ''), DIRECTORY_SEPARATOR),
         ]);
     }
 }

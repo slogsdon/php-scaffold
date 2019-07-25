@@ -2,7 +2,7 @@
 
 namespace Scaffold\Test\Unit\Controller;
 
-class TestObj
+class TestObj extends \Scaffold\Controller\AbstractController
 {
     public $foo = null;
     public function setFoo($value)
