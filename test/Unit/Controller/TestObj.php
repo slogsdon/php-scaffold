@@ -4,8 +4,13 @@ namespace Scaffold\Test\Unit\Controller;
 
 class TestObj extends \Scaffold\Controller\AbstractController
 {
+    /** @var mixed */
     public $foo = null;
-    public function setFoo($value)
+    /**
+     * @param mixed $value
+     * @return self
+     */
+    public function setFoo($value): self
     {
         $this->foo = $value;
         return $this;

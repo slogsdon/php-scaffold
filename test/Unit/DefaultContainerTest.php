@@ -6,22 +6,24 @@ use PHPUnit\Framework\TestCase;
 use Scaffold\Application;
 use Scaffold\DefaultContainer;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 class DefaultContainerTest extends TestCase
 {
-    protected $options;
-    
-    public function setup()
+    /** @var mixed[] */
+    protected $options = [];
+
+    public function setup(): void
     {
         $this->options = [
             'request' => ['globals' => []],
             'views' => ['directory' => null],
         ];
     }
-    
-    public function testHas()
+
+    public function testHas(): void
     {
         $container = new DefaultContainer($this->options);
-        
+
         $this->assertTrue($container->has(Application::INTERFACE_CONFIGURATION));
         $this->assertTrue($container->has(Application::INTERFACE_CONTAINER));
         $this->assertTrue($container->has(Application::INTERFACE_REQUEST));
@@ -31,7 +33,7 @@ class DefaultContainerTest extends TestCase
         $this->assertTrue($container->has(Application::INTERFACE_TEMPLATE_ENGINE));
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $container = new DefaultContainer($this->options);
 

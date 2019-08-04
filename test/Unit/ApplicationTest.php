@@ -3,6 +3,7 @@
 namespace Scaffold\Test\Unit;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 use League\Container\Container;
 use PHPUnit\Framework\TestCase;
@@ -10,11 +11,13 @@ use Scaffold\Application;
 
 use Scaffold\Test\Unit\Response\NaiveEmitter;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 class ApplicationTest extends TestCase
 {
+    /** @var Application */
     protected $app;
 
-    public function setup()
+    public function setup(): void
     {
         $container = new Container;
         $container->add(
@@ -33,39 +36,39 @@ class ApplicationTest extends TestCase
      * @expectedException        LogicException
      * @expectedExceptionMessage template name cannot be empty
      */
-    public function testRenderWithMissingTemplateName()
+    public function testRenderWithMissingTemplateName(): void
     {
         $this->app->render('');
     }
-     
-    public function testMapRoute()
+
+    public function testMapRoute(): void
     {
-        $app = $this->app->mapRoute('GET', '/', function () {
+        $app = $this->app->mapRoute('GET', '/', function (): void {
         });
         $this->assertEquals($this->app, $app);
     }
-     
-    public function testMapRoutes()
+
+    public function testMapRoutes(): void
     {
         $app = $this->app->mapRoutes([
-            ['GET', '/', function () {
+            ['GET', '/', function (): void {
             }],
         ]);
         $this->assertEquals($this->app, $app);
     }
-     
+
     /**
      * @expectedException        League\Route\Http\Exception\NotFoundException
      * @expectedWxceptionMessage Not Found
      */
-    public function testRunNoRoutes()
+    public function testRunNoRoutes(): void
     {
         $this->app->run();
     }
 
-    public function testRunWithRoute()
+    public function testRunWithRoute(): void
     {
-        $this->app->mapRoute('GET', '/', function ($req, $res) {
+        $this->app->mapRoute('GET', '/', function (ServerRequestInterface $req, ResponseInterface $res) {
             return $res;
         });
         $this->assertNotNull($this->app->run());

@@ -2,7 +2,7 @@
 
 namespace Scaffold\Response;
 
-use Zend\Diactoros\Response\SapiEmitter;
+use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
 /**
  * Default response emitter for Scaffold using the Zend Diactoros `SapiEmitter`

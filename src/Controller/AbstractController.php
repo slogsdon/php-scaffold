@@ -12,10 +12,10 @@ abstract class AbstractController
     /**
      * Current application instance
      *
-     * @var ApplicationInterface
+     * @var ApplicationInterface|null
      */
-    protected $app;
-    
+    protected $app = null;
+
     /**
      * Dependency injection setter for an `ApplicationInterface`
      * instance

@@ -6,7 +6,11 @@ use Scaffold\ApplicationInterface;
 
 class TestApp implements ApplicationInterface
 {
+    /**
+     * @return string
+     */
     public function render(string $name, array $data = [])
     {
+        return "";
     }
 }

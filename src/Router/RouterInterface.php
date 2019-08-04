@@ -11,12 +11,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 interface RouterInterface
 {
-    /**
-     * Instantiates a new object
-     *
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container);
+
 
     /**
      * Handles the incoming `$request` to produce a proper `$response`

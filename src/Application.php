@@ -5,7 +5,7 @@ namespace Scaffold;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 use Scaffold\Configuration\ConfigurationInterface;
@@ -23,26 +23,26 @@ class Application implements ApplicationInterface
 
     const INTERFACE_CONFIGURATION = ConfigurationInterface::class;
     const INTERFACE_CONTAINER = ContainerInterface::class;
-    const INTERFACE_REQUEST = RequestInterface::class;
+    const INTERFACE_REQUEST = ServerRequestInterface::class;
     const INTERFACE_RESPONSE = ResponseInterface::class;
     const INTERFACE_RESPONSE_EMITTER = ResponseEmitterInterface::class;
     const INTERFACE_ROUTER = RouterInterface::class;
     const INTERFACE_TEMPLATE_ENGINE = TemplateEngineInterface::class;
-    
+
     /**
      * Current router instance
      *
      * @var RouterInterface
      */
     public $route;
-    
+
     /**
      * Current service container instance
      *
      * @var ContainerInterface
      */
     protected $container;
-    
+
     /**
      * Instantiates a new object
      *
@@ -54,7 +54,7 @@ class Application implements ApplicationInterface
         $this->prepareContainer($options);
         $this->prepareRouter($options);
     }
-    
+
     /**
      * Runs the application
      *
@@ -62,13 +62,10 @@ class Application implements ApplicationInterface
      */
     public function run()
     {
-        $response = $this->container->get(static::INTERFACE_ROUTER)->dispatch(
-            $this->container->get(static::INTERFACE_REQUEST),
-            $this->container->get(static::INTERFACE_RESPONSE)
-        );
-        return $this->container->get(static::INTERFACE_RESPONSE_EMITTER)->emit($response);
+        $response = $this->getRouter()->dispatch($this->getServerRequest(), $this->getResponse());
+        return $this->getResponseEmitter()->emit($response);
     }
-    
+
     /**
      * {@inheritDoc}
      *
@@ -76,33 +73,39 @@ class Application implements ApplicationInterface
      * @param array $data
      * @return string
      */
-    public function render(string $template, array $data = [])
+    public function render(string $template, array $data = []): string
     {
-        return $this->container->get(static::INTERFACE_TEMPLATE_ENGINE)->render($template, $data);
+        return $this->getTemplateEngine()->render($template, $data);
     }
-    
+
     /**
      * Sets up the service container instance
      *
      * @param array $options
+     *
+     * @return void
      */
-    protected function prepareContainer(array $options)
+    protected function prepareContainer(array $options): void
     {
+        /** @var ContainerInterface */
         $this->container = $options['container'] ?? new Container;
-        
+
         if (method_exists($this->container, 'delegate')) {
             $this->container->delegate(new DefaultContainer($options));
             $this->container->delegate(new ReflectionContainer);
         }
     }
-    
+
     /**
      * Sets up the router instance
      *
      * @param array $options
+     *
+     * @return void
      */
-    protected function prepareRouter(array $options)
+    protected function prepareRouter(array $options): void
     {
+        /** @var array */
         $configOptions = $this->safeGet($options, 'config', []);
         $routes = implode(DIRECTORY_SEPARATOR, [
             getcwd(),
@@ -110,20 +113,22 @@ class Application implements ApplicationInterface
             $this->safeGet($configOptions, 'directory', ''),
             'routes.php',
         ]);
-        
+
         if (file_exists($routes)) {
-            $this->mapRoutes(include $routes);
+            /** @var array */
+            $includedRoutes = include $routes;
+            $this->mapRoutes($includedRoutes);
         }
-        
-        $this->route = $this->container->get(static::INTERFACE_ROUTER);
+
+        $this->route = $this->getRouter();
     }
-    
+
     /**
      * Default options for Scaffold
      *
-     * @return array
+     * @return ((array[]|string)[]|null)[]
      */
-    public function getDefaultOptions()
+    public function getDefaultOptions(): array
     {
         return [
             'config' => ['directory' => 'config'],
@@ -136,7 +141,7 @@ class Application implements ApplicationInterface
             'views' => ['directory' => 'views'],
         ];
     }
-    
+
     /**
      * Gets active options, applying defaults when necessary
      *
@@ -147,21 +152,23 @@ class Application implements ApplicationInterface
     {
         return array_replace($this->getDefaultOptions(), $options);
     }
-    
+
     /**
      * Maps a set of routes
      *
      * @param array $routes
-     * @return ApplicationInterface
+     *
+     * @return self
      */
-    public function mapRoutes(array $routes)
+    public function mapRoutes(array $routes): self
     {
+        /** @psalm-var array<int, mixed> $route */
         foreach ($routes as $route) {
             call_user_func_array([$this, 'mapRoute'], $route);
         }
         return $this;
     }
-    
+
     /**
      * Defines a `$handler` for a given HTTP `$method` and `$route`
      * combination
@@ -169,17 +176,61 @@ class Application implements ApplicationInterface
      * @param string $method
      * @param string $route
      * @param callable $handler
-     * @return ApplicationInterface
+     *
+     * @return self
      */
-    public function mapRoute(string $method, string $route, $handler)
+    public function mapRoute(string $method, string $route, $handler): self
     {
-        $this->container->get(static::INTERFACE_ROUTER)->map(
-            $method,
-            $route,
-            ChildControllerFactory::maybeMake($handler, [
-                'application' => $this,
-            ])
-        );
+        /** @var callable */
+        $handler = ChildControllerFactory::maybeMake($handler, [
+            'application' => $this,
+        ]);
+        $this->getRouter()->map($method, $route, $handler);
         return $this;
+    }
+
+    /**
+     * @return RouterInterface
+     */
+    public function getRouter(): RouterInterface
+    {
+        /** @var RouterInterface */
+        return $this->container->get(self::INTERFACE_ROUTER);
+    }
+
+    /**
+     * @return ServerRequestInterface
+     */
+    public function getServerRequest(): ServerRequestInterface
+    {
+        /** @var ServerRequestInterface */
+        return $this->container->get(self::INTERFACE_REQUEST);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getResponse(): ResponseInterface
+    {
+        /** @var ResponseInterface */
+        return $this->container->get(self::INTERFACE_RESPONSE);
+    }
+
+    /**
+     * @return ResponseEmitterInterface
+     */
+    public function getResponseEmitter(): ResponseEmitterInterface
+    {
+        /** @var ResponseEmitterInterface */
+        return $this->container->get(self::INTERFACE_RESPONSE_EMITTER);
+    }
+
+    /**
+     * @return TemplateEngineInterface
+     */
+    public function getTemplateEngine(): TemplateEngineInterface
+    {
+        /** @var TemplateEngineInterface */
+        return $this->container->get(self::INTERFACE_TEMPLATE_ENGINE);
     }
 }

@@ -7,8 +7,8 @@ use Scaffold\Response\ResponseEmitterInterface;
 
 class NaiveEmitter implements ResponseEmitterInterface
 {
-    public function emit(ResponseInterface $res)
+    public function emit(ResponseInterface $res): bool
     {
-        return $res->getBody();
+        return true;
     }
 }

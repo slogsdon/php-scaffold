@@ -13,7 +13,7 @@ interface ResponseEmitterInterface
      * Converts the `$response` to something usable
      *
      * @param ResponseInterface $response
-     * @return mixed
+     * @return bool
      */
-    public function emit(ResponseInterface $response);
+    public function emit(ResponseInterface $response): bool;
 }

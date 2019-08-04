@@ -7,9 +7,10 @@ use Scaffold\Controller\AbstractController;
 
 use Scaffold\Test\Unit\TestApp;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 class AbstractControllerTest extends TestCase
 {
-    public function testSetApplication()
+    public function testSetApplication(): void
     {
         $app = new TestApp;
         $controller = new TestController;

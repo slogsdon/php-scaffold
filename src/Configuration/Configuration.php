@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
      * @var array|null
      */
     protected $options;
-    
+
     /**
      * Instantiates a new object
      *
@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
     {
         $this->options = $options;
     }
-    
+
     /**
      * Gets the current configuration options
      *
@@ -40,7 +40,8 @@ class Configuration implements ConfigurationInterface
      * {@inheritDoc}
      *
      * @param array $options
-     * @return ConfigurationInterface
+     *
+     * @return self
      */
     public function setOptions(array $options)
     {
@@ -53,11 +54,14 @@ class Configuration implements ConfigurationInterface
      */
     public function getViewRoot()
     {
+        /** @var mixed[] */
         $viewOptions = $this->safeGet($this->options, 'views', []);
+        /** @var string */
+        $viewDirectory = $this->safeGet($viewOptions, 'directory', '');
         return implode(DIRECTORY_SEPARATOR, [
             getcwd(),
             '..',
-            trim($this->safeGet($viewOptions, 'directory', ''), DIRECTORY_SEPARATOR),
+            trim($viewDirectory, DIRECTORY_SEPARATOR),
         ]);
     }
 }
